@@ -6,14 +6,12 @@ import axios from "axios";
 interface State {
   username: string;
   subs: string[];
-  accessToken: string;
 }
 
 class App extends React.Component {
   state: State = {
     username: "",
-    subs: [],
-    accessToken: ""
+    subs: []
   };
 
   componentDidMount() {
@@ -33,14 +31,8 @@ class App extends React.Component {
     if (Object.keys(params).length > 0) {
       localStorage.setItem("oauth2-test-params", JSON.stringify(params));
     }
-    console.log(params.access_token);
-    this.setState({
-      accessToken: params.access_token
-    });
 
-    //make sure auth token is set before calling this
     let vr = localStorage.getItem("oauth2-test-params");
-    console.log(vr);
 
     if (vr != null) {
       var para = JSON.parse(vr);
@@ -88,26 +80,51 @@ class App extends React.Component {
           "&maxResults=50"
         //key=AIzaSyCjtG0WC3UFCudri6h5RK9ZaqM_Uc5XizU
       )
-      .then(response => console.log("tests", response));
+      .then(response => console.log("Subs: ", response));
     return ["channel 1", "channel 2", "channel 3"];
+  }
+
+  unSub(access_token: string, id: string) {
+    axios
+      .delete(
+        `https://www.googleapis.com/youtube/v3/subscriptions?id=${id}&key=[${access_token}]`
+      )
+      .then(response => console.log(response));
   }
 
   render() {
     this.state.subs.unshift("Channel Name");
-    let allSubs = this.state.subs.map((sub, index) => (
-      <li key={index}>
-        <SubEntry name={sub} />
-      </li>
-    ));
-
-    return (
-      <div className="App">
-        <h2>YouTube Subscription Manager</h2>
-        <h3>{this.state.username}</h3>
-        <button onClick={this.getOauthToken}>Authorize</button>
-        {allSubs}
-      </div>
-    );
+    let vr: string | null = localStorage.getItem("oauth2-test-params");
+    if (vr) {
+      const para = JSON.parse(vr);
+      let allSubs = this.state.subs.map((sub, index) => (
+        <li key={index}>
+          <SubEntry
+            name={sub}
+            unsubscribe={(id: string) => {
+              this.unSub(para.access_token, id);
+            }}
+          />
+        </li>
+      ));
+      //Auth
+      return (
+        <div className="App">
+          <h2>YouTube Subscription Manager</h2>
+          <h3>{this.state.username}</h3>
+          {allSubs}
+        </div>
+      );
+    } else {
+      //No aUth
+      return (
+        <div className="App">
+          <h2>YouTube Subscription Manager</h2>
+          <h3>{this.state.username}</h3>
+          <button onClick={this.getOauthToken}>Authorize</button>
+        </div>
+      );
+    }
   }
 }
 

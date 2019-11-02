@@ -1,3 +1,10 @@
 .subEntry {
-    border-bottom: 1px solid white;
+  border-bottom: 1px solid white;
+  display: flex;
+  align-items: center;
+}
+
+.unsub {
+  background-color: red;
+  border-color: darkred;
 }
