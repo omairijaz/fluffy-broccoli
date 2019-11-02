@@ -1,7 +1,18 @@
 .App {
   max-height: 50%;
   width: 100%;
+<<<<<<< HEAD
   background: #545956;
   color: #cccccc;
   list-style-type: none;
 }
+=======
+  background: #121212;
+  color: white;
+  list-style-type: none;
+}
+
+h2 {
+  color: white !important;
+}
+>>>>>>> 80c25ce80e0e7c2c3aa71b6be6b4295c1f0f6120
