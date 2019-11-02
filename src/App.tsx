@@ -15,22 +15,22 @@ class App extends React.Component {
     subs: []
   }
 
-  componentDidMount(){
-    let token = this.getOauthToken();
-    let un = this.getUsername();
-    let sorbs = this.getSubs();
-    this.setState({
-      username: un,
-      subs: sorbs,
-    });
-  }
+  // componentDidMount(){
+  //   let token = this.getOauthToken();
+  //   let un = this.getUsername();
+  //   let sorbs = this.getSubs();
+  //   this.setState({
+  //     username: un,
+  //     subs: sorbs,
+  //   });
+  // }
 
   getUsername():string {
     
     return "Username";
   }
 
-  getOauthToken():string {
+  getOauthToken = () => {
     /*axios.post('https://accounts.google.com/o/oauth2/v2/auth?\
       scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fyoutube&\
       redirect_uri=http%3A%2F%2Flocalhost&\
@@ -44,8 +44,8 @@ class App extends React.Component {
     form.setAttribute('method', 'GET');
     form.setAttribute('action', oauth2Endpoint);
     let p = ['client_id','redirect_uri','response_type','scope']
-    let p2 = ['378341800500-oiefi7k5ajjrugkjlnom4odms2ltkhmv.apps.googleusercontent.com',
-                  'http://localhost:3000','token','https://www.googleapis.com/auth/youtube.force-ssl'];
+    let p2 = ['1065759368920-rqertu1ir6c2jpmema2uqto2pg4m4aca.apps.googleusercontent.com',
+                  'http://localhost:3000','token','https://www.googleapis.com/auth/youtube'];
     for(let i=0; i<4; i++) {
       let input = document.createElement('input');
       input.setAttribute('type', 'hidden');
@@ -55,7 +55,6 @@ class App extends React.Component {
     }
     document.body.appendChild(form);
     form.submit();
-    return "nah";
   }
 
   getSubs(): string[]{
@@ -76,6 +75,7 @@ class App extends React.Component {
       <div className="App">
         <h2>YouTube Subscription Manager</h2>
         <h3>{this.state.username}</h3>
+        <button onClick={this.getOauthToken}>Authorize</button>
         {allSubs}
       </div>
     );
