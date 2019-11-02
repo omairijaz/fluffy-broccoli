@@ -128,13 +128,16 @@ class App extends React.Component {
       .catch(err => console.log(err));
   }
 
-  searchSubs(access_token: string, id: string) {
+  searchSubs = (access_token: string, id: string) => {
+    //first grab a search result with passed in string
+    //then find the id of the first result and pass it into our sub list
     axios
       .get(
         `https://www.googleapis.com/youtube/v3/subscriptions?part=snippet&forChannelId=${id}&mine=true&access_token=${access_token}`
       )
       .then(response => console.log(response)); //show it in the list
-  }
+    //clear the state of the search term
+  };
 
   render() {
     let vr: string | null = localStorage.getItem("oauth2-test-params");
@@ -171,7 +174,13 @@ class App extends React.Component {
             }
             autoComplete="off"
           />
-          <button>search</button>
+          <button
+            onClick={() =>
+              this.searchSubs(para.access_token, this.state.searchTerm)
+            }
+          >
+            search
+          </button>
           {allSubs}
         </div>
       );
