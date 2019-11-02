@@ -5,7 +5,30 @@ import axios from "axios";
 
 interface State {
   username: string;
-  subs: string[];
+  subs: [];
+}
+
+interface ISubscription {
+  etag: string;
+  id: string;
+  kind: string;
+  snippet: {
+    channelId: string;
+    description: string;
+    publishedAt: string;
+    thumbnails: {
+      default: {
+        url: string;
+      };
+      high: {
+        url: string;
+      };
+      medium: {
+        url: string;
+      };
+    };
+    title: string;
+  };
 }
 
 class App extends React.Component {
@@ -71,7 +94,7 @@ class App extends React.Component {
     form.submit();
   };
 
-  getSubs(access_token: String): string[] {
+  getSubs(access_token: String) {
     axios
       .get(
         "https://www.googleapis.com/youtube/v3/subscriptions?part=snippet&mine=true&" +
@@ -80,8 +103,20 @@ class App extends React.Component {
           "&maxResults=50"
         //key=AIzaSyCjtG0WC3UFCudri6h5RK9ZaqM_Uc5XizU
       )
-      .then(response => console.log("Subs: ", response));
-    return ["channel 1", "channel 2", "channel 3"];
+      .then(
+        response => {
+          console.log(response.data.items);
+          this.setState({
+            subs: response.data.items
+          });
+        },
+        error => {
+          console.log(error);
+        }
+      );
+    //response => console.log(response));
+
+    //set the subs to this.state.subs
   }
 
   unSub(access_token: string, id: string) {
@@ -93,14 +128,14 @@ class App extends React.Component {
   }
 
   render() {
-    this.state.subs.unshift("Channel Name");
     let vr: string | null = localStorage.getItem("oauth2-test-params");
     if (vr) {
       const para = JSON.parse(vr);
-      let allSubs = this.state.subs.map((sub, index) => (
+      let allSubs = this.state.subs.map((sub: ISubscription, index) => (
         <li key={index}>
           <SubEntry
-            name={sub}
+            key={index}
+            name={sub.snippet.title}
             unsubscribe={(id: string) => {
               this.unSub(para.access_token, id);
             }}
