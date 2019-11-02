@@ -8,7 +8,7 @@ interface State {
   subs: [];
 }
 
-interface ISubscription {
+export interface ISubscription {
   etag: string;
   id: string;
   kind: string;
@@ -97,11 +97,7 @@ class App extends React.Component {
   getSubs(access_token: String) {
     axios
       .get(
-        "https://www.googleapis.com/youtube/v3/subscriptions?part=snippet&mine=true&" +
-          "access_token=" +
-          access_token +
-          "&maxResults=50"
-        //key=AIzaSyCjtG0WC3UFCudri6h5RK9ZaqM_Uc5XizU
+        `https://www.googleapis.com/youtube/v3/subscriptions?part=snippet&mine=true&access_token=${access_token}&maxResults=50&order=unread`
       )
       .then(
         response => {
@@ -129,13 +125,15 @@ class App extends React.Component {
 
   render() {
     let vr: string | null = localStorage.getItem("oauth2-test-params");
+    console.log(vr);
+
     if (vr) {
       const para = JSON.parse(vr);
       let allSubs = this.state.subs.map((sub: ISubscription, index) => (
         <li key={index}>
           <SubEntry
             key={index}
-            name={sub.snippet.title}
+            sub={sub}
             unsubscribe={(id: string) => {
               this.unSub(para.access_token, id);
             }}
