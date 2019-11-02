@@ -19,7 +19,6 @@ class App extends React.Component {
   componentDidMount() {
     // let token = this.getOauthToken();
     // let un = this.getUsername();
-    // let sorbs = this.getSubs();
     // this.setState({
     //   username: un,
     //   subs: sorbs,
@@ -38,6 +37,18 @@ class App extends React.Component {
     this.setState({
       accessToken: params.access_token
     });
+
+    //make sure auth token is set before calling this
+    let vr = localStorage.getItem("oauth2-test-params");
+    console.log(vr);
+
+    if (vr != null) {
+      var para = JSON.parse(vr);
+      if (para && para.access_token) {
+        // let sub =
+        this.getSubs(para.access_token);
+      }
+    }
   }
 
   getUsername(): string {
@@ -68,12 +79,16 @@ class App extends React.Component {
     form.submit();
   };
 
-  getSubs(): string[] {
+  getSubs(access_token: String): string[] {
     axios
       .get(
-        "https://www.googleapis.com/youtube/v3/subscriptions?part=id&mine=true&key=AIzaSyCjtG0WC3UFCudri6h5RK9ZaqM_Uc5XizU"
+        "https://www.googleapis.com/youtube/v3/subscriptions?part=snippet&mine=true&" +
+          "access_token=" +
+          access_token +
+          "&maxResults=50"
+        //key=AIzaSyCjtG0WC3UFCudri6h5RK9ZaqM_Uc5XizU
       )
-      .then(response => console.log(response));
+      .then(response => console.log("tests", response));
     return ["channel 1", "channel 2", "channel 3"];
   }
 
