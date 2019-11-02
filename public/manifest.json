@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
-  "name": "Hacker Tab",
+  "name": "YouTube Subscriber Manager",
   "author": "",
   "version": "1.0.1",
-  "description": "Replace new tab screen with GitHub trending projects.",
+  "description": "Manage you subscriptions the easy way!",
   "permissions": ["storage"],
-  "browser_action": {  "default_popup": "index.html"}
+  "browser_action": { "default_popup": "index.html" }
 }

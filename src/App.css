@@ -1,8 +1,7 @@
 .App {
   max-height: 50%;
   width: 100%;
-  background: #121212;
-  color: white;
-  list-style-type:none;
+  background: #545956;
+  color: #cccccc;
+  list-style-type: none;
 }
-
