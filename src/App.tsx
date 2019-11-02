@@ -81,7 +81,7 @@ class App extends React.Component {
       "1065759368920-rqertu1ir6c2jpmema2uqto2pg4m4aca.apps.googleusercontent.com",
       "http://localhost:3000",
       "token",
-      "https://www.googleapis.com/auth/youtube"
+      "https://www.googleapis.com/auth/youtube.force-ssl"
     ];
     for (let i = 0; i < 4; i++) {
       let input = document.createElement("input");
@@ -118,9 +118,12 @@ class App extends React.Component {
   unSub(access_token: string, id: string) {
     axios
       .delete(
-        `https://www.googleapis.com/youtube/v3/subscriptions?id=${id}&key=[${access_token}]`
+        `https://www.googleapis.com/youtube/v3/subscriptions?id=${id}&access_token=${access_token}`
       )
-      .then(response => console.log(response));
+      .then(response => {
+        this.getSubs(access_token);
+      })
+      .catch(err => console.log(err));
   }
 
   searchSubs(access_token: string, id: string) {
@@ -153,6 +156,8 @@ class App extends React.Component {
         <div className="App">
           <h2>YouTube Subscription Manager</h2>
           <h3>{this.state.username}</h3>
+          <input type="text" id="search" placeholder="search subscriptions" autoComplete="off"/>
+          <button>search</button>
           {allSubs}
         </div>
       );
