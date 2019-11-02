@@ -4,9 +4,6 @@
   "author": "",
   "version": "1.0.1",
   "description": "Replace new tab screen with GitHub trending projects.",
-  "chrome_url_overrides": {
-    "newtab": "index.html"
-  },
   "permissions": ["storage"],
   "browser_action": {  "default_popup": "index.html"}
 }
