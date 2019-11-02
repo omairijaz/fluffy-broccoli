@@ -148,6 +148,8 @@ class App extends React.Component {
         <div className="App">
           <h2>YouTube Subscription Manager</h2>
           <h3>{this.state.username}</h3>
+          <input type="text" id="search" placeholder="search subscriptions" autoComplete="off"/>
+          <button>search</button>
           {allSubs}
         </div>
       );
