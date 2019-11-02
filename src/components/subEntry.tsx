@@ -9,12 +9,18 @@ interface Props {
 
 class SubEntry extends React.Component<Props> {
   render() {
+    const { sub } = this.props;
     return (
       <div className="subEntry">
-        <p>{this.props.sub.snippet.title}</p>
+        <img
+          style={{ borderRadius: "50%" }}
+          src={sub.snippet.thumbnails.default.url}
+          alt={sub.snippet.title}
+        />
+        <p>{sub.snippet.title}</p>
         <button
           className="unsub"
-          onClick={() => this.props.unsubscribe(this.props.sub.id)}
+          onClick={() => this.props.unsubscribe(sub.id)}
         >
           Unsubscribe
         </button>
