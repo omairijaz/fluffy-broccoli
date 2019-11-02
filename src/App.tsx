@@ -155,7 +155,7 @@ class App extends React.Component {
       //No aUth
       return (
         <div className="App">
-          <h2>YouTube Subscription Manager</h2>
+          <h2 className="title">YouTube Subscription Manager</h2>
           <h3>{this.state.username}</h3>
           <button onClick={this.getOauthToken}>Authorize</button>
         </div>
