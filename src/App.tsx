@@ -123,6 +123,14 @@ class App extends React.Component {
       .then(response => console.log(response));
   }
 
+  searchSubs(access_token: string, id: string) {
+    axios
+      .get(
+        `https://www.googleapis.com/youtube/v3/subscriptions?part=snippet&forChannelId=${id}&mine=true&access_token=${access_token}`
+      )
+      .then(response => console.log(response)); //show it in the list
+  }
+
   render() {
     let vr: string | null = localStorage.getItem("oauth2-test-params");
     console.log(vr);
