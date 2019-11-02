@@ -161,6 +161,7 @@ class App extends React.Component {
           <input
             type="text"
             id="search"
+            style={{ color: "black" }}
             placeholder="search subscriptions"
             value={this.state.searchTerm}
             onChange={e =>
