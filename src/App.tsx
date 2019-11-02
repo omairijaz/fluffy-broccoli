@@ -1,7 +1,21 @@
 import React from "react";
 import "./App.css";
 import SubEntry from "./components/subEntry";
-import axios from 'axios';
+import axios from "axios";
+import { google } from "googleapis";
+
+const oauth2Client = new google.auth.OAuth2(
+  "1065759368920-rqertu1ir6c2jpmema2uqto2pg4m4aca.apps.googleusercontent.com",
+  "4LwLz0EGOGwVSZT1KkLPDLx1",
+  "http://localhost:3000/"
+);
+
+const scopes = ["https://www.googleapis.com/auth/youtube"];
+
+const url = oauth2Client.generateAuthUrl({
+  access_type: "online",
+  scope: scopes
+});
 
 interface State {
   username: string;
@@ -9,24 +23,25 @@ interface State {
 }
 
 class App extends React.Component {
-
-  state:State = {
+  state: State = {
     username: "",
     subs: []
-  }
+  };
 
-  // componentDidMount(){
-  //   let token = this.getOauthToken();
-  //   let un = this.getUsername();
-  //   let sorbs = this.getSubs();
-  //   this.setState({
-  //     username: un,
-  //     subs: sorbs,
-  //   });
-  // }
+  componentDidMount = async () => {
+    //   let token = this.getOauthToken();
+    //   let un = this.getUsername();
+    //   let sorbs = this.getSubs();
+    //   this.setState({
+    //     username: un,
+    //     subs: sorbs,
+    //   });
+    console.log("test"); //window.location.href);
+    // const { tokens } = await oauth2Client.getToken(code);
+    // oauth2Client.setCredentials(tokens);
+  };
 
-  getUsername():string {
-    
+  getUsername(): string {
     return "Username";
   }
 
@@ -37,39 +52,46 @@ class App extends React.Component {
       response_type=token&\
       client_id=378341800500-oiefi7k5ajjrugkjlnom4odms2ltkhmv.apps.googleusercontent.com')
     .then(response => console.log(response));*/
-    
-    let oauth2Endpoint = 'https://accounts.google.com/o/oauth2/v2/auth';
-    let form = document.createElement('form');
-    form.setAttribute('target','_blank');
-    form.setAttribute('method', 'GET');
-    form.setAttribute('action', oauth2Endpoint);
-    let p = ['client_id','redirect_uri','response_type','scope']
-    let p2 = ['1065759368920-rqertu1ir6c2jpmema2uqto2pg4m4aca.apps.googleusercontent.com',
-                  'http://localhost:3000','token','https://www.googleapis.com/auth/youtube'];
-    for(let i=0; i<4; i++) {
-      let input = document.createElement('input');
-      input.setAttribute('type', 'hidden');
-      input.setAttribute('name', p[i]);
-      input.setAttribute('value', p2[i]);
+
+    let oauth2Endpoint = "https://accounts.google.com/o/oauth2/v2/auth";
+    let form = document.createElement("form");
+    form.setAttribute("target", "_blank");
+    form.setAttribute("method", "GET");
+    form.setAttribute("action", oauth2Endpoint);
+    let p = ["client_id", "redirect_uri", "response_type", "scope"];
+    let p2 = [
+      "1065759368920-rqertu1ir6c2jpmema2uqto2pg4m4aca.apps.googleusercontent.com",
+      "http://localhost:3000/",
+      "token",
+      "https://www.googleapis.com/auth/youtube"
+    ];
+    for (let i = 0; i < 4; i++) {
+      let input = document.createElement("input");
+      input.setAttribute("type", "hidden");
+      input.setAttribute("name", p[i]);
+      input.setAttribute("value", p2[i]);
       form.appendChild(input);
     }
     document.body.appendChild(form);
     form.submit();
-  }
+  };
 
-  getSubs(): string[]{
-    axios.get('https://www.googleapis.com/youtube/v3/subscriptions?part=id&mine=true&key=AIzaSyCjtG0WC3UFCudri6h5RK9ZaqM_Uc5XizU')
-    .then(response => console.log(response));
-    return ["channel 1","channel 2","channel 3"];
+  getSubs(): string[] {
+    axios
+      .get(
+        "https://www.googleapis.com/youtube/v3/subscriptions?part=id&mine=true&key=AIzaSyCjtG0WC3UFCudri6h5RK9ZaqM_Uc5XizU"
+      )
+      .then(response => console.log(response));
+    return ["channel 1", "channel 2", "channel 3"];
   }
 
   render() {
     this.state.subs.unshift("Channel Name");
-    let allSubs = this.state.subs.map((sub, index) =>
+    let allSubs = this.state.subs.map((sub, index) => (
       <li key={index}>
-        <SubEntry name={sub}/>
+        <SubEntry name={sub} />
       </li>
-    );
+    ));
 
     return (
       <div className="App">
@@ -80,6 +102,6 @@ class App extends React.Component {
       </div>
     );
   }
-};
+}
 
 export default App;
